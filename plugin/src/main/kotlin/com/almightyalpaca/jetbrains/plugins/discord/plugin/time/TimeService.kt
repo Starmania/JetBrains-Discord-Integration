@@ -214,7 +214,9 @@ class TimeService : Disposable {
     }
 
     private fun unload() {
-        IdeEventQueue.getInstance().removeIdleListener(idleListener)
+        if (loaded.getAndSet(false)) {
+            IdeEventQueue.getInstance().removeIdleListener(idleListener)
+        }
     }
 
     override fun dispose() {
