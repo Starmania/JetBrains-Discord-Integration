@@ -21,8 +21,8 @@ import com.almightyalpaca.jetbrains.plugins.discord.plugin.diagnose.diagnoseServ
 import com.almightyalpaca.jetbrains.plugins.discord.plugin.render.renderService
 import com.almightyalpaca.jetbrains.plugins.discord.plugin.time.timeService
 import com.almightyalpaca.jetbrains.plugins.discord.plugin.utils.createErrorMessage
+import com.almightyalpaca.jetbrains.plugins.discord.plugin.utils.toCompletableFuture
 import com.intellij.openapi.options.SearchableConfigurable
-import kotlinx.coroutines.future.asCompletableFuture
 import javax.swing.BoxLayout
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
@@ -51,19 +51,19 @@ class ApplicationConfigurable : SearchableConfigurable {
 
         val service = diagnoseService
 
-        service.discord.asCompletableFuture().thenAcceptAsync { discord ->
+        service.discord.toCompletableFuture().thenAcceptAsync { discord ->
             if (discord != DiagnoseService.Discord.OTHER) {
                 SwingUtilities.invokeLater { add(createErrorMessage(discord.message), 0) }
             }
         }
 
-        service.plugins.asCompletableFuture().thenAcceptAsync { plugins ->
+        service.plugins.toCompletableFuture().thenAcceptAsync { plugins ->
             if (plugins != DiagnoseService.Plugins.NONE) {
                 SwingUtilities.invokeLater { add(createErrorMessage(plugins.message), 0) }
             }
         }
 
-        service.ide.asCompletableFuture().thenAcceptAsync { ide ->
+        service.ide.toCompletableFuture().thenAcceptAsync { ide ->
             if (ide != DiagnoseService.Ide.OTHER) {
                 SwingUtilities.invokeLater { add(createErrorMessage(ide.message), 0) }
             }

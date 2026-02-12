@@ -25,8 +25,8 @@ import com.almightyalpaca.jetbrains.plugins.discord.plugin.source.sourceService
 import com.almightyalpaca.jetbrains.plugins.discord.plugin.utils.gbc
 import com.almightyalpaca.jetbrains.plugins.discord.plugin.utils.label
 import com.almightyalpaca.jetbrains.plugins.discord.plugin.utils.throwing
+import com.almightyalpaca.jetbrains.plugins.discord.plugin.utils.toCompletableFuture
 import com.intellij.openapi.util.JDOMExternalizerUtil
-import kotlinx.coroutines.future.asCompletableFuture
 import org.jdom.Element
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -110,7 +110,7 @@ class ThemeOption(text: String, val description: String?) : Option<ThemeValue>(t
     override var isComponentEnabled by throwing<Boolean> { UnsupportedOperationException() } // TODO
 
     init {
-        source.getThemesAsync().asCompletableFuture().thenAcceptAsync { themes ->
+        source.getThemesAsync().toCompletableFuture().thenAcceptAsync { themes ->
             var value = this.currentValue
             if (value == null || value !in themes.keys) {
                 value = themes.default.id
